@@ -3,6 +3,7 @@
 .gradle/
 .vscode/
 build/
+*.db
 build.gradle
 gradlew
 gradlew.bat
