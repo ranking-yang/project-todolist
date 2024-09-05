@@ -1,0 +1,12 @@
+
+###backend###
+.gradle/
+.vscode/
+build/
+build.gradle
+gradlew
+gradlew.bat
+HELP.md
+settings.gradle
+
+application.properties
