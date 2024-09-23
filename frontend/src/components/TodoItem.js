@@ -1,6 +1,7 @@
 import React from "react";
 import styled, {css} from "styled-components";
 import {MdDone, MdDelete} from 'react-icons/md';
+import axios from "axios";
 import { useTodoDispatch } from "../TodoContext";
 
 const Remove = styled.div`
@@ -60,10 +61,36 @@ const Text = styled.div`
     }
 `;
 
+
+
 function TodoItem({id, done, text}) {
+
     const dispatch = useTodoDispatch();
-    const onToggle = () => dispatch({ type: 'TOGGLE', id });
-    const onRemove = () => dispatch({ type: 'REMOVE', id });
+
+    const onToggle = async () => {
+        
+        try {
+
+            await axios.put(`http://localhost:8080/api/put/${id}`, {done: !done});
+
+            dispatch({ type: 'TOGGLE', id });
+
+        } catch(error) {
+            console.log("todo를 수정하는데 실패", error);
+        }
+    };
+    const onRemove = async () => {
+        
+        try {
+
+            await axios.delete(`http://localhost:8080/api/delete/${id}`);
+
+            dispatch({ type: 'REMOVE', id })
+
+        } catch (error) {
+            console.log("todo를 삭제하는데 실패", error);
+        }
+    };
 
     return (
         <TodoItemBlock>

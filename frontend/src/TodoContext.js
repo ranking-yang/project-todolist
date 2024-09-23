@@ -1,56 +1,52 @@
-import React, { useRef, useContext, createContext, useReducer } from "react";
-
-const initialTodos = [
-    {
-        id: 1,
-        text: '프로젝트 생성하기',
-        done: true
-    },
-    {
-        id: 2,
-        text: '컴포넌트 스타일링하기',
-        done: true
-    },
-    {
-        id: 3,
-        text: 'Context 만들기',
-        done: false
-    },
-    {
-        id: 4,
-        text: '기능 구현하기',
-        done: false
-    }
-];
-
-function todoReducer(state, action) {
-    switch (action.type) {
-        case 'CREATE':
-            return state.concat(action.todo);
-        case 'TOGGLE':
-            return state.map(todo =>
-                todo.id === action.id ? { ...todo, done: !todo.done } : todo);
-        case 'REMOVE':
-            return state.filter(todo => todo.id !== action.id);
-        default:
-            throw new Error(`Unhandled action type: ${action.type}`);
-    }
-}
+import axios from "axios";
+import React, { useContext, createContext,  useState, useEffect } from "react";
 
 const TodoStateContext = createContext();
 const TodoDispatchContext = createContext();
-const TodoNextIdContext = createContext();
+    
 
-export function TodoProvider({ children }){
-    const [state, dispatch] = useReducer(todoReducer, initialTodos);
-    const nextId = useRef(5);
+export function TodoProvider({ children }) {
+    
+
+    const [todos, setTodos] = useState([]);
+
+    useEffect(() => {
+        // 비동기 함수 선언
+        const fetchTodos = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/api/get');
+                setTodos(response.data);
+            } catch (error) {
+                console.error("todo목록 안가져옴:", error);
+            }
+        };
+
+        fetchTodos();
+    }, []);
+
+    const dispatch = (action) => {
+        switch (action.type) {
+            case 'CREATE':
+                setTodos([...todos, action.todo]);
+                break;
+            case 'TOGGLE':
+                setTodos(todos.map(todo =>
+                    todo.id === action.id ? { ...todo, done: !todo.done } : todo
+                ));
+                break;
+            case 'REMOVE':
+                setTodos(todos.filter(todo => todo.id !== action.id));
+                break;
+            default:
+                break;
+        }
+    };
+
     
     return (
-        <TodoStateContext.Provider value={state}>
+        <TodoStateContext.Provider value={todos}>
             <TodoDispatchContext.Provider value={dispatch}>
-                <TodoNextIdContext.Provider value={nextId}>
-                    {children}
-                </TodoNextIdContext.Provider>
+                {children}
             </TodoDispatchContext.Provider>
         </TodoStateContext.Provider>
     );
@@ -70,15 +66,6 @@ export function useTodoDispatch() {
     if (!context) {
         throw new Error('Cannot find TodoProvider');
     }
-    
-    return context;
-}
 
-export function useTodoNextId() {
-    const context = useContext(TodoNextIdContext);
-    if (!context) {
-        throw new Error('Cannot find TodoProvider');
-    }
-    
     return context;
 }

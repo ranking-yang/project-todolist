@@ -34,7 +34,7 @@ function TodoHead() {
   const dateString = today.toLocaleDateString(
     'ko-KR',
     {
-      yaer: 'numeric',
+      year: 'numeric',
       month: 'long',
       day: 'numeric'
     }

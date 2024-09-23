@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import { MdAdd } from "react-icons/md";
-import { useTodoDispatch, useTodoNextId } from "../TodoContext";
+import { useTodoDispatch } from "../TodoContext";
+import axios from "axios";
 
 const CircleButton = styled.div`
     background: #38d9a9;
@@ -81,23 +82,26 @@ function TodoCreate() {
     const [value, setValue] = useState('');
 
     const dispatch = useTodoDispatch();
-    const nextId = useTodoNextId();
 
     const onToggle = () => setOpen(!open);
     const onChange = e => setValue(e.target.value);
-    const onSubmit = e => {
+    
+    const onSubmit = async e => {
         e.preventDefault();
-        dispatch({
-            type: 'CREATE',
-            todo: {
-                id: nextId.current,
-                text: value,
-                done: false
-            }
-        });
-        setValue('');
-        setOpen(false);
-        nextId.current += 1;
+        
+        try {
+            const response = await axios.post('http://localhost:8080/api/post',
+                            {
+                                text: value,
+                                done: false
+                            });
+            
+            dispatch({ type: 'CREATE', todo: response.data });
+            setValue('');
+            setOpen(false);
+        } catch (error) {
+            console.log("todo 추가 실패", error);
+        }    
     };
 
     return (
