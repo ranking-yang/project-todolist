@@ -1,12 +1,22 @@
-
-###backend###
-.gradle/
-.vscode/
+# backend
 build/
 *.db
-gradlew
-gradlew.bat
-HELP.md
-settings.gradle
-
 application.properties
+
+# frontend
+node_modules/
+build/
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# eclipse
+bin/
+.classpath
+.project
+.settings
+
+# vscode
+.vscode/

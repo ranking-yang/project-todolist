@@ -71,7 +71,7 @@ function TodoItem({id, done, text}) {
         
         try {
 
-            await axios.put(`http://localhost:8080/api/put/${id}`, {done: !done});
+            await axios.put(`/api/put/${id}`, {done: !done});
 
             dispatch({ type: 'TOGGLE', id });
 
@@ -83,7 +83,7 @@ function TodoItem({id, done, text}) {
         
         try {
 
-            await axios.delete(`http://localhost:8080/api/delete/${id}`);
+            await axios.delete(`/api/delete/${id}`);
 
             dispatch({ type: 'REMOVE', id })
 

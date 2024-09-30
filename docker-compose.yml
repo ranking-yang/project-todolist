@@ -1,0 +1,24 @@
+version: '3.9'
+
+services:
+  backend:
+    build: ./backend
+    image: amugeonahae/todolist:backend
+    ports:
+      - 8080:8080
+    networks:
+      - todolist
+
+  frontend:
+    build: ./frontend
+    image: amugeonahae/todolist:frontend
+    ports:
+      - 80:80
+    depends_on:
+      - backend
+    networks:
+      - todolist
+
+networks:
+  todolist:
+    driver: bridge

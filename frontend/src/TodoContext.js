@@ -3,21 +3,19 @@ import React, { useContext, createContext,  useState, useEffect } from "react";
 
 const TodoStateContext = createContext();
 const TodoDispatchContext = createContext();
-    
 
 export function TodoProvider({ children }) {
     
-
     const [todos, setTodos] = useState([]);
 
     useEffect(() => {
         // 비동기 함수 선언
         const fetchTodos = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/get');
+                const response = await axios.get('/api/get');
                 setTodos(response.data);
             } catch (error) {
-                console.error("todo목록 안가져옴:", error);
+                console.error("todo 목록을 가져오지 못함:", error);
             }
         };
 

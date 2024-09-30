@@ -90,7 +90,7 @@ function TodoCreate() {
         e.preventDefault();
         
         try {
-            const response = await axios.post('http://localhost:8080/api/post',
+            const response = await axios.post('/api/post',
                             {
                                 text: value,
                                 done: false
@@ -113,7 +113,7 @@ function TodoCreate() {
                             autoFocus
                             placeholder="할 일을 입력 후, Enter를 누르세요" 
                             onChange={onChange}
-                            value={value}    
+                            value={value}
                         />
                     </InsertForm>
                 </InsertFormPositioner>

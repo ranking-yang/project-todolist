@@ -2,6 +2,7 @@ package com.project.todolist.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class TodoController {
 
     private final TodoService todoService;
-
+	
     @PostMapping("/api/post")
     public Todo createTodo(@RequestBody Todo todo) {
         todoService.insertTodo(todo);
@@ -38,10 +39,9 @@ public class TodoController {
     public void deleteTodo(@PathVariable Long id) {
         todoService.deleteTodo(id);
     }
-
+    
     @GetMapping("/api/get")
     public List<Todo> getTodo() {
         return todoService.getTodoList();
     }
-
 }
